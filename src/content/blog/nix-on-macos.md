@@ -26,7 +26,7 @@ The same config works on any machine — darwin, WSL2, NixOS — but if you're o
 
 That's it. On first run, `darwin-rebuild` is bootstrapped directly from the build result — nothing needs to be pre-installed beyond Nix itself.
 
-This gives me real confidence that I can fully rebuild my working environment on a new laptop. As long as I can bootstrap this repo, I can get back to exactly where I was. The repo is public — and that's fine — because this is not how I manage credentials or secrets. The output of this process is a fully configured environment with secrets intentionally left unbound.
+I now have a fully reproducible working environment that I can stamp out anywhere. The github repo is public — and that's fine — this is not how I manage credentials or secrets. The output of this process is a fully configured enviroment but any secrets are intentionally left unbound.
 
 ## The problem Nix solves
 
