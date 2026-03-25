@@ -7,6 +7,7 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
+const base = import.meta.env.BASE_URL;
 const { title, description, pubDate, updatedDate } = Astro.props;
 ---
 
@@ -36,51 +37,26 @@ const { title, description, pubDate, updatedDate } = Astro.props;
 					<slot />
 				</div>
 			</article>
-			<p class="back"><a href="/blog">← back to posts</a></p>
+			<p class="back"><a href={`${base}blog`}>← back to posts</a></p>
 		</main>
 		<Footer />
 	</body>
 </html>
 
 <style>
-	.post-header {
-		margin-bottom: 2rem;
-	}
+	.post-header { margin-bottom: 2rem; }
 	.post-meta {
-		color: var(--fg-dim);
-		font-size: 0.8rem;
-		margin: 0 0 0.5rem;
-		display: flex;
-		gap: 0.4rem;
-		flex-wrap: wrap;
+		color: var(--fg-dim); font-size: 0.8rem; margin: 0 0 0.5rem;
+		display: flex; gap: 0.4rem; flex-wrap: wrap;
 	}
-	.post-meta :global(time) {
-		color: var(--yellow);
-	}
-	.post-title {
-		font-size: 1.6rem;
-		color: var(--pink);
-		margin: 0;
-	}
+	.post-meta :global(time) { color: var(--yellow); }
+	.post-title { font-size: 1.6rem; color: var(--pink); margin: 0; }
 	.post-title::before { content: none; }
-	hr {
-		margin: 1.25rem 0 0;
-		border-color: var(--border);
-	}
-	.prose {
-		color: var(--fg);
-	}
+	hr { margin: 1.25rem 0 0; border-color: var(--border); }
+	.prose { color: var(--fg); }
 	.prose :global(h1)::before { content: '# '; color: var(--fg-dim); }
-	.back {
-		margin-top: 3rem;
-		font-size: 0.85rem;
-	}
-	.back a {
-		color: var(--fg-dim);
-	}
-	.back a:hover {
-		color: var(--teal);
-		border-bottom: none;
-	}
+	.back { margin-top: 3rem; font-size: 0.85rem; }
+	.back a { color: var(--fg-dim); border-bottom: none; }
+	.back a:hover { color: var(--teal); border-bottom: none; }
 	.dim { color: var(--fg-dim); }
 </style>

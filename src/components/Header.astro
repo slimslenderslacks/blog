@@ -1,17 +1,21 @@
 ---
 import { SITE_TITLE } from '../consts';
-import HeaderLink from './HeaderLink.astro';
+
+const base = import.meta.env.BASE_URL;
+const pathname = Astro.url.pathname.replace(base.replace(/\/$/, ''), '');
+const isActive = (path: string) =>
+	path === '/' ? pathname === '/' || pathname === '' : pathname.startsWith(path);
 ---
 
 <header>
 	<nav>
 		<span class="prompt">
-			<span class="prompt-user">~</span><span class="prompt-sep">/</span><a href="/" class="prompt-title">{SITE_TITLE}</a>
+			<span class="prompt-user">~</span><span class="prompt-sep">/</span><a href={base} class="prompt-title">{SITE_TITLE}</a>
 		</span>
 		<div class="nav-links">
-			<HeaderLink href="/">home</HeaderLink>
-			<HeaderLink href="/blog">blog</HeaderLink>
-			<HeaderLink href="/about">about</HeaderLink>
+			<a href={base} class:list={[{ active: isActive('/') }]}>home</a>
+			<a href={`${base}blog`} class:list={[{ active: isActive('/blog') }]}>blog</a>
+			<a href={`${base}about`} class:list={[{ active: isActive('/about') }]}>about</a>
 		</div>
 	</nav>
 </header>
@@ -35,38 +39,29 @@ import HeaderLink from './HeaderLink.astro';
 		font-size: 0.9rem;
 		display: flex;
 		align-items: center;
-		gap: 0;
 	}
-	.prompt-user {
-		color: var(--green);
-	}
-	.prompt-sep {
-		color: var(--fg-dim);
-		margin: 0 0.1rem;
-	}
+	.prompt-user { color: var(--green); }
+	.prompt-sep { color: var(--fg-dim); margin: 0 0.1rem; }
 	.prompt-title {
 		color: var(--mauve);
 		font-weight: 700;
 		border-bottom: none;
 	}
-	.prompt-title:hover {
-		color: var(--pink);
-		border-bottom: none;
-	}
+	.prompt-title:hover { color: var(--pink); border-bottom: none; }
 	.nav-links {
 		display: flex;
 		gap: 1.5rem;
 		align-items: center;
 	}
-	.nav-links :global(a) {
+	.nav-links a {
 		color: var(--fg-muted);
 		font-size: 0.85rem;
 		text-decoration: none;
 		border-bottom: none;
 		transition: color 0.15s;
 	}
-	.nav-links :global(a:hover),
-	.nav-links :global(a.active) {
+	.nav-links a:hover,
+	.nav-links a.active {
 		color: var(--teal);
 		border-bottom: none;
 	}
