@@ -7,7 +7,7 @@ import mermaid from 'astro-mermaid';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://slimslenderslacks.github.io',
-	base: '/blog',
+	site: 'https://blog.slimslenderslacks.com',
+	base: '/',
 	integrations: [mdx(), sitemap(), mermaid()],
 });
