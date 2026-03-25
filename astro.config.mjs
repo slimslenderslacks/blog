@@ -9,5 +9,5 @@ import mermaid from 'astro-mermaid';
 export default defineConfig({
 	site: 'https://blog.slimslenderslacks.com',
 	base: '/',
-	integrations: [mdx(), sitemap(), mermaid()],
+	integrations: [mdx(), sitemap(), mermaid({ theme: 'dark' })],
 });
