@@ -41,11 +41,11 @@ The entire config is driven from a single `flake.nix`. A central function called
 ```mermaid
 graph LR
     subgraph Inputs["flake inputs"]
-        direction TB
         nixpkgs["nixpkgs 25.05"]
         nix_darwin["nix-darwin"]
         home_manager["home-manager"]
         overlays["overlays"]
+        nixpkgs ~~~ nix_darwin ~~~ home_manager ~~~ overlays
     end
 
     subgraph Fn["mkSystem ( machine, platform )"]
