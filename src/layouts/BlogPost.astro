@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -8,79 +7,80 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate } = Astro.props;
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
-
 	<body>
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
+				<header class="post-header">
+					<p class="post-meta">
+						<span class="dim">posted</span>
+						<FormattedDate date={pubDate} />
+						{updatedDate && (
+							<>
+								<span class="dim">· updated</span>
+								<FormattedDate date={updatedDate} />
+							</>
+						)}
+					</p>
+					<h1 class="post-title">{title}</h1>
+					<hr />
+				</header>
 				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
 					<slot />
 				</div>
 			</article>
+			<p class="back"><a href="/blog">← back to posts</a></p>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.post-header {
+		margin-bottom: 2rem;
+	}
+	.post-meta {
+		color: var(--fg-dim);
+		font-size: 0.8rem;
+		margin: 0 0 0.5rem;
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+	}
+	.post-meta :global(time) {
+		color: var(--yellow);
+	}
+	.post-title {
+		font-size: 1.6rem;
+		color: var(--pink);
+		margin: 0;
+	}
+	.post-title::before { content: none; }
+	hr {
+		margin: 1.25rem 0 0;
+		border-color: var(--border);
+	}
+	.prose {
+		color: var(--fg);
+	}
+	.prose :global(h1)::before { content: '# '; color: var(--fg-dim); }
+	.back {
+		margin-top: 3rem;
+		font-size: 0.85rem;
+	}
+	.back a {
+		color: var(--fg-dim);
+	}
+	.back a:hover {
+		color: var(--teal);
+		border-bottom: none;
+	}
+	.dim { color: var(--fg-dim); }
+</style>
