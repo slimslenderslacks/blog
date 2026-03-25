@@ -38,17 +38,28 @@ The entire config is driven from a single `flake.nix`. A central function called
 
 ```mermaid
 graph LR
-    flake(["flake.nix\n— single source of truth —"])
+    subgraph Inputs["flake inputs"]
+        direction TB
+        nixpkgs["nixpkgs 25.05"]
+        nix_darwin["nix-darwin"]
+        home_manager["home-manager"]
+        overlays["overlays"]
+    end
 
-    flake -->|"darwin=true"| darwin["macOS\nnix-darwin + home-manager"]
-    flake -->|"wsl=true"| wsl["WSL2\nroot tarball + home-manager"]
-    flake -->|"linux"| nixos["NixOS / Linux VM\nnixosSystem + home-manager"]
+    subgraph Fn["mkSystem ( machine, platform )"]
+        direction TB
+        machines["machines/  — hardware specifics"]
+        users["users/slim/ — packages · dotfiles · shell"]
+    end
 
-    hm["users/slim/home-manager.nix\npackages · dotfiles · shell · neovim"]
+    subgraph Outputs["identical environment on every platform"]
+        direction TB
+        macos["macOS\nnix-darwin"]
+        wsl["WSL2\nroot tarball"]
+        linux["NixOS / any Linux VM\nnixosSystem"]
+    end
 
-    hm -.->|shared| darwin
-    hm -.->|shared| wsl
-    hm -.->|shared| nixos
+    Inputs --> Fn --> Outputs
 ```
 
 The platform-specific layers (`darwin.nix`, a machine `.nix` file) handle only what's truly platform-specific: Homebrew casks on macOS, kernel settings on NixOS, WSL-specific tweaks. Everything else — the tools I actually use day to day — lives in `home-manager.nix` and is identical everywhere.
