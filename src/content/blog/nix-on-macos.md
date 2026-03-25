@@ -26,6 +26,8 @@ The same config works on any machine — darwin, WSL2, NixOS — but if you're o
 
 That's it. On first run, `darwin-rebuild` is bootstrapped directly from the build result — nothing needs to be pre-installed beyond Nix itself.
 
+This gives me real confidence that I can fully rebuild my working environment on a new laptop. As long as I can bootstrap this repo, I can get back to exactly where I was. The repo is public — and that's fine — because this is not how I manage credentials or secrets. The output of this process is a fully configured environment with secrets intentionally left unbound.
+
 ## The problem Nix solves
 
 Most approaches to environment management are per-platform: Homebrew on macOS, `apt` on Linux, something ad-hoc on WSL. Dotfiles help with shell config, but they don't manage the tools themselves. The result is drift — the thing that works on your laptop doesn't quite work on the server.
@@ -52,14 +54,14 @@ graph LR
         users["users/slim/ — packages · dotfiles · shell"]
     end
 
-    subgraph Outputs["identical environment on every platform"]
-        direction TB
-        macos["macOS\nnix-darwin"]
-        wsl["WSL2\nroot tarball"]
-        linux["NixOS / any Linux VM\nnixosSystem"]
-    end
+    macos["macOS\nnix-darwin"]
+    wsl["WSL2\nroot tarball"]
+    linux["NixOS / any Linux VM"]
 
-    Inputs --> Fn --> Outputs
+    Inputs --> Fn
+    Fn -->|output| macos
+    Fn -->|output| wsl
+    Fn -->|output| linux
 ```
 
 The platform-specific layers (`darwin.nix`, a machine `.nix` file) handle only what's truly platform-specific: Homebrew casks on macOS, kernel settings on NixOS, WSL-specific tweaks. Everything else — the tools I actually use day to day — lives in `home-manager.nix` and is identical everywhere.
