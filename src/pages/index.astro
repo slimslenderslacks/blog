@@ -31,11 +31,11 @@ const posts = (await getCollection('blog'))
 					{posts.map((post) => (
 						<li>
 							<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-							<a href={`${base}/blog/${post.id}/`}>{post.data.title}</a>
+							<a href={`${base}/posts/${post.id}/`}>{post.data.title}</a>
 						</li>
 					))}
 				</ul>
-				<p class="more"><a href={`${base}/blog`}>→ all posts</a></p>
+				<p class="more"><a href={`${base}/posts`}>→ all posts</a></p>
 			</section>
 		</main>
 		<Footer />
